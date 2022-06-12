@@ -1,0 +1,102 @@
+type: horizontal-stack
+mode: horizontal
+cards:
+  - type: custom:mushroom-person-card
+    entity: person.rudolfo_correia
+    use_entity_picture: true
+    hide_name: false
+    layout: default
+    tap_action: null
+    action: fire-dom-event
+    browser_mod: null
+    command: popup
+    deviceID: this
+    title: Rudolfo
+    card: null
+  - type: custom:mod-card
+    style: |
+      ha-card {
+      padding-right: 15px;
+      padding-left: 15px;
+      padding-bottom: 15px;
+      }
+card:
+  type: vertical-stack
+  cards:
+    - type: custom:mushroom-entity-card
+      entity: sensor.iphone_de_rudolfo_geocoded_location
+      primary_info: none
+      icon: mdi:map-marker
+      icon_color: yellow
+    - type: horizontal-stack
+      cards:
+        - type: map
+          entities:
+            - entity: device_tracker.iphone_de_rudolfo
+              aspect_ratio: '2'
+              use_entity_picture: true
+            - type: custom:mushroom-chips-card
+              style: |
+                ha-card {
+                --chip-box-shadow: none;
+                --chip-background: none;
+                --chip-spacing: none;
+                --chip-height: 33px
+                }
+chips:
+  - type: template
+    icon_color: |2-
+      {% set state=states('sensor.iphone_de_rudolfo_battery_state') %}
+      {% if state=='Charging' %}
+      green
+      {% elif state=='Not Charging' %}
+      #6f6f6f
+      {% endif %}
+    entity: sensor.iphone_de_rudolfo_battery_state
+    content: '{{ states(entity) }}'
+    icon: mdi:power-plug
+    tap_action: null
+    action: more-info
+  - type: template
+    entity: sensor.iphone_de_rudolfo_battery_level
+    content: '{{ states(entity) }} %'
+    icon: |2
+      {% set bl = states('sensor.iphone_de_rudolfo_battery_level') | int %}
+      {% if bl < 10 %} mdi:battery-outline
+      {% elif bl < 20 %} mdi:battery-10
+      {% elif bl < 30 %} mdi:battery-20
+      {% elif bl < 40 %} mdi:battery-30
+      {% elif bl < 50 %} mdi:battery-40
+      {% elif bl < 60 %} mdi:battery-50
+      {% elif bl < 70 %} mdi:battery-60
+      {% elif bl < 80 %} mdi:battery-70
+      {% elif bl < 90 %} mdi:battery-80
+      {% elif bl < 100 %} mdi:battery-90
+      {% elif bl == 100 %} mdi:battery
+      {% else %} mdi:battery-unknown
+      {% endif %}
+    icon_color: |2-
+      {% set bl = states('sensor.iphone_de_rudolfo_battery_level') | int %}
+      {% if bl < 10 %} red
+      {% elif bl < 20 %} red
+      {% elif bl < 30 %} red
+      {% elif bl < 40 %} orange
+      {% elif bl < 50 %} orange
+      {% elif bl < 60 %} green
+      {% elif bl < 70 %} green
+      {% elif bl < 80 %} green
+      {% elif bl < 90 %} green
+      {% elif bl < 100 %} green
+      {% elif bl == 100 %} green
+      {% else %} grey
+      {% endif %}
+    tap_action: null
+    action: more-info
+  - type: template
+  - type: entity
+    icon_color: yellow
+    entity: sensor.iphone_de_rudolfo_steps
+  - type: entity
+    icon_color: yellow
+    entity: sensor.iphone_de_rudolfo_distance
+    alignment: left
